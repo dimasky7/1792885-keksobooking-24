@@ -56,7 +56,8 @@ const fullOffer = function (count) {
   return {
     author: author,
     locate: locate,
-    offer: offer  };
+    offer: offer,
+  };
 };
 
 //Функция для генерации массива из 10 объявлений

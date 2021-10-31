@@ -1,9 +1,5 @@
-import {createOfferArray} from './data.js';
-
-const offerArray= createOfferArray(10);
 const templateContent = document.querySelector('#card').content;
 const popup = templateContent.querySelector('.popup');
-const offerField = document.querySelector('#map-canvas');
 const photoOriginal = popup.querySelector('.popup__photo');
 const typeInRussian = {
   flat: 'Квартира',
@@ -80,8 +76,8 @@ const drawCard = function (announcement) {
   } else {
     newSimilarOffer.querySelector('.popup__photos').classList.add('hidden');
   }
-  //вставляем новое объявление в нужное место в разметке страницы
-  offerField.appendChild(newSimilarOffer);
+
+  return newSimilarOffer;
 };
 
-drawCard(offerArray[0]);
+export {drawCard};

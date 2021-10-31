@@ -1,11 +1,13 @@
 const numberOfRooms = document.querySelector('#room_number');
 const capacity = document.querySelector('#capacity');
 const capacityOptions = capacity.querySelectorAll('option');
+const address = document.querySelector('#address');
 
 //initial start
 for (let i = 1; i < capacity.length; i++) {
   capacityOptions[i].setAttribute('disabled', 'disabled');
 }
+address.setAttribute('disabled', 'disabled');
 
 //handlers
 numberOfRooms.addEventListener('change', (evt) => {
@@ -30,3 +32,5 @@ numberOfRooms.addEventListener('change', (evt) => {
     capacity.value = evt.target.value;
   }
 });
+
+export {address};

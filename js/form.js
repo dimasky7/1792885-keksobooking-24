@@ -7,7 +7,7 @@ const address = document.querySelector('#address');
 for (let i = 1; i < capacity.length; i++) {
   capacityOptions[i].setAttribute('disabled', 'disabled');
 }
-address.setAttribute('disabled', 'disabled');
+address.setAttribute('readonly', true);
 
 //handlers
 numberOfRooms.addEventListener('change', (evt) => {

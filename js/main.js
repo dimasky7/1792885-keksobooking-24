@@ -1,5 +1,5 @@
 import './form.js';
-import './fetchAPI.js';
+import './fetchForForm.js';
 import { address } from './form.js';
 import {inactivatePage, activatePage} from './pageState.js';
 import { drawCard } from './similarOffer.js';
@@ -88,3 +88,6 @@ fetch('https://24.javascript.pages.academy/keksobooking/data')
     const errorMessage = document.querySelector('.promo');
     errorMessage.appendChild(errorInfo);
   });
+
+export {tokioLat, tokioLng};
+export {mainPinIcon, mainPinMarker, map};

@@ -1,7 +1,10 @@
+import { tokioLat, tokioLng } from './main.js';
+import {mainPinMarker} from './main.js';
 const numberOfRooms = document.querySelector('#room_number');
 const capacity = document.querySelector('#capacity');
 const capacityOptions = capacity.querySelectorAll('option');
 const address = document.querySelector('#address');
+const reset = document.querySelector('.ad-form__reset');
 
 //initial start
 for (let i = 1; i < capacity.length; i++) {
@@ -32,5 +35,14 @@ numberOfRooms.addEventListener('change', (evt) => {
     capacity.value = evt.target.value;
   }
 });
+
+reset.addEventListener('click', () => {
+  address.value = `${tokioLat}, ${tokioLng}`;
+  mainPinMarker.setLatLng({
+    lat: tokioLat,
+    lng: tokioLng,
+  });
+});
+
 
 export {address};

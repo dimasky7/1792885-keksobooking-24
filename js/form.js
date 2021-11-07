@@ -1,5 +1,6 @@
 import { tokioLat, tokioLng } from './main.js';
-import {mainPinMarker} from './main.js';
+import {mainPinMarker, map} from './main.js';
+import { offerForm } from './fetchForForm.js';
 const numberOfRooms = document.querySelector('#room_number');
 const capacity = document.querySelector('#capacity');
 const capacityOptions = capacity.querySelectorAll('option');
@@ -36,7 +37,10 @@ numberOfRooms.addEventListener('change', (evt) => {
   }
 });
 
-reset.addEventListener('click', () => {
+reset.addEventListener('click', (event) => {
+  event.preventDefault();
+  map.closePopup();
+  offerForm.reset();
   address.value = `${tokioLat}, ${tokioLng}`;
   mainPinMarker.setLatLng({
     lat: tokioLat,

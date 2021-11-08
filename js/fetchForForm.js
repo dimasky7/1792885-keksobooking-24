@@ -15,7 +15,7 @@ offerForm.addEventListener('submit', (evt) => {
   const formData = new FormData(evt.target);
 
   fetch(
-    'https://24.javascript.pages.academy/keksobooking',
+    'https://24.javascript.pages.academy/keksobooking1',
     {
       method: 'POST',
       body: formData,
@@ -58,29 +58,26 @@ offerForm.addEventListener('submit', (evt) => {
       const isError = error.cloneNode(true);
       const isErrorButton = isError.querySelector('.error__button');
       body.appendChild(isError);
-      isErrorButton.addEventListener('click', () => {
+      const closeError = () => {
+        isErrorButton.removeEventListener('click', errorButtonClick);
+      };
+      const errorButtonClick = () => {
         isError.remove();
-      });
-      isErrorButton.removeEventListener('click', () => {
-        isError.remove();
-      });
-      document.addEventListener('keydown', (event) => {
+        closeError();
+      };
+      isErrorButton.addEventListener('click', errorButtonClick);
+      const errorDocumentEsc = (event) => {
         if (event.key === 'Escape') {
           isError.remove();
         }
-      });
-      document.removeEventListener('keydown', (event) => {
-        if (event.key === 'Escape') {
-          isError.remove();
-        }
-      });
-      document.addEventListener('click', () => {
+      };
+      document.addEventListener('keydown', errorDocumentEsc);
+      document.removeEventListener('keydown', errorDocumentEsc);
+      const errorDocumentClick = () => {
         isError.remove();
-      });
-      document.removeEventListener('click', () => {
-        isError.remove();
-      });
-
+      };
+      document.addEventListener('click', errorDocumentClick);
+      document.removeEventListener('click', errorDocumentClick);
     });
 });
 

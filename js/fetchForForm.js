@@ -15,7 +15,7 @@ offerForm.addEventListener('submit', (evt) => {
   const formData = new FormData(evt.target);
 
   fetch(
-    'https://24.javascript.pages.academy/keksobooking1',
+    'https://24.javascript.pages.academy/keksobooking',
     {
       method: 'POST',
       body: formData,
@@ -30,22 +30,22 @@ offerForm.addEventListener('submit', (evt) => {
     .then(() => {
       const isSuccess = success.cloneNode(true);
       body.appendChild(isSuccess);
-      document.addEventListener('click', () => {
+      const closeSuccessListener = () => {
+        document.removeEventListener('click', successDocumentClick);
+        document.removeEventListener('keydown', successDocumentEsc);
+      };
+      function successDocumentClick () {
         isSuccess.remove();
-      });
-      document.removeEventListener('click', () => {
-        isSuccess.remove();
-      });
-      document.addEventListener('keydown', (event) => {
+        closeSuccessListener();
+      }
+      function successDocumentEsc (event) {
         if (event.key === 'Escape') {
           isSuccess.remove();
+          closeSuccessListener();
         }
-      });
-      document.removeEventListener('keydown', (event) => {
-        if (event.key === 'Escape') {
-          isSuccess.remove();
-        }
-      });
+      }
+      document.addEventListener('click', successDocumentClick);
+      document.addEventListener('keydown', successDocumentEsc);
       map.closePopup();
       offerForm.reset();
       address.value = `${tokioLat}, ${tokioLng}`;
@@ -58,26 +58,28 @@ offerForm.addEventListener('submit', (evt) => {
       const isError = error.cloneNode(true);
       const isErrorButton = isError.querySelector('.error__button');
       body.appendChild(isError);
-      const closeError = () => {
+      const closeErrorListener = () => {
+        document.removeEventListener('click', errorDocumentClick);
+        document.removeEventListener('keydown', errorDocumentEsc);
         isErrorButton.removeEventListener('click', errorButtonClick);
       };
-      const errorButtonClick = () => {
+      function errorDocumentClick () {
         isError.remove();
-        closeError();
-      };
-      isErrorButton.addEventListener('click', errorButtonClick);
-      const errorDocumentEsc = (event) => {
+        closeErrorListener();
+      }
+      function errorDocumentEsc (event) {
         if (event.key === 'Escape') {
           isError.remove();
+          closeErrorListener();
         }
-      };
-      document.addEventListener('keydown', errorDocumentEsc);
-      document.removeEventListener('keydown', errorDocumentEsc);
-      const errorDocumentClick = () => {
+      }
+      function errorButtonClick () {
         isError.remove();
-      };
+        closeErrorListener();
+      }
       document.addEventListener('click', errorDocumentClick);
-      document.removeEventListener('click', errorDocumentClick);
+      document.addEventListener('keydown', errorDocumentEsc);
+      isErrorButton.addEventListener('click', errorButtonClick);
     });
 });
 

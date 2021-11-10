@@ -34,14 +34,14 @@ const fullOffer = function (count) {
     avatar: `img/avatars/user${  count  }.png`,
   };
 
-  const locate = {
+  const location = {
     lat: getRandomFloat(LATITUDE_MIN, LATITUDE_MAX, PRECISION_IN_COORDINATES), // широта
     lng: getRandomFloat(LONGITUDE_MIN, LONGITUDE_MAX, PRECISION_IN_COORDINATES), // долгота
   };
 
   const offer = {
     title: 'The best offer in Tokio!', //строка — заголовок предложения. Придумал самостоятельно.
-    address: `${locate.lat  }, ${  locate.lng}`,
+    address: `${location.lat  }, ${  location.lng}`,
     price: getRandomInteger(MIN_PRICE, MAX_PRICE),
     type: TYPE_ARRAY[getRandomInteger(0, TYPE_ARRAY.length -1)], //случайное значение из массива type[]
     rooms: getRandomInteger(MIN_ROOMS, MAX_ROOMS),
@@ -55,7 +55,7 @@ const fullOffer = function (count) {
 
   return {
     author: author,
-    locate: locate,
+    location: location,
     offer: offer,
   };
 };

@@ -1,13 +1,17 @@
+import { tokioLat, tokioLng } from './main.js';
+import {mainPinMarker, map} from './main.js';
+import { offerForm } from './fetchForForm.js';
 const numberOfRooms = document.querySelector('#room_number');
 const capacity = document.querySelector('#capacity');
 const capacityOptions = capacity.querySelectorAll('option');
 const address = document.querySelector('#address');
+const reset = document.querySelector('.ad-form__reset');
 
 //initial start
 for (let i = 1; i < capacity.length; i++) {
   capacityOptions[i].setAttribute('disabled', 'disabled');
 }
-address.setAttribute('disabled', 'disabled');
+address.setAttribute('readonly', true);
 
 //handlers
 numberOfRooms.addEventListener('change', (evt) => {
@@ -32,5 +36,17 @@ numberOfRooms.addEventListener('change', (evt) => {
     capacity.value = evt.target.value;
   }
 });
+
+reset.addEventListener('click', (event) => {
+  event.preventDefault();
+  map.closePopup();
+  offerForm.reset();
+  address.value = `${tokioLat}, ${tokioLng}`;
+  mainPinMarker.setLatLng({
+    lat: tokioLat,
+    lng: tokioLng,
+  });
+});
+
 
 export {address};

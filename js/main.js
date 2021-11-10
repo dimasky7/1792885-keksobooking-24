@@ -1,12 +1,10 @@
 import './form.js';
+import './fetchForForm.js';
 import { address } from './form.js';
 import {inactivatePage, activatePage} from './pageState.js';
-import { createOfferArray } from './data.js';
 import { drawCard } from './similarOffer.js';
-
 const tokioLat = 35.68950;
 const tokioLng = 139.69171;
-const offerArray= createOfferArray(10);
 
 inactivatePage();
 
@@ -58,17 +56,38 @@ mainPinMarker.on('moveend', (evt) => {
   address.value = `${coordinates.lat.toFixed(precision)}, ${coordinates.lng.toFixed(precision)}`;
 });
 
-offerArray.forEach((announcement) => {
-  const marker = L.marker({
-    lat: announcement.locate.lat,
-    lng: announcement.locate.lng,
-  },
-  {
-    icon: pinIcon,
-  },
-  );
+////////////////////////Получение данных с сервера///////////////////////////
 
-  marker
-    .addTo(map)
-    .bindPopup(drawCard(announcement));
-});
+fetch('https://24.javascript.pages.academy/keksobooking/data')
+  .then((response) => {
+    if (response.ok) {
+      return response.json();
+    }
+    throw new Error();
+  })
+  .then((data) => {
+    data.forEach((announcement) => {
+      const marker = L.marker({
+        lat: announcement.location.lat,
+        lng: announcement.location.lng,
+      },
+      {
+        icon: pinIcon,
+      },
+      );
+
+      marker
+        .addTo(map)
+        .bindPopup(drawCard(announcement));
+    });
+  })
+  .catch(() => {
+    const errorInfo = document.createElement('p');
+    errorInfo.textContent = '=> Ошибка загрузки данных с сервера!';
+    errorInfo.style.color = 'red';
+    const errorMessage = document.querySelector('.promo');
+    errorMessage.appendChild(errorInfo);
+  });
+
+export {tokioLat, tokioLng};
+export {mainPinIcon, mainPinMarker, map};

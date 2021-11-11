@@ -35,3 +35,4 @@ const activatePage = function () {
 };
 
 export {inactivatePage, activatePage};
+export {mapFiltersForm};

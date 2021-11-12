@@ -4,6 +4,7 @@ import { address } from './form.js';
 import {inactivatePage, activatePage} from './pageState.js';
 import { drawCard } from './similarOffer.js';
 import {mapFiltersForm} from './pageState.js';
+import { getData } from './api.js';
 const tokioLat = 35.68950;
 const tokioLng = 139.69171;
 
@@ -83,9 +84,9 @@ const housingGuests = mapFiltersForm.querySelector('#housing-guests');
 const housingFeatures = mapFiltersForm.querySelector('#housing-features');
 
 const getFeaturesFiltersArray = function () {
-const featuresArray = housingFeatures.querySelectorAll('.map__checkbox:checked');
-const featuresArrayOut = Array.from(featuresArray, input => input.value);
-return featuresArrayOut;
+  const featuresArray = housingFeatures.querySelectorAll('.map__checkbox:checked');
+  const featuresArrayOut = Array.from(featuresArray, (input) => input.value);
+  return featuresArrayOut;
 };
 
 const featuresMatch = function (features, filtersArray) {
@@ -96,62 +97,58 @@ const featuresMatch = function (features, filtersArray) {
   return true;
 };
 
-fetch('https://24.javascript.pages.academy/keksobooking/data')
-  .then((response) => {
-    if (response.ok) {
-      return response.json();
-    }
-    throw new Error();
-  })
-  .then((data) => {
-    data.forEach((announcement) => {
+const success = function (data) {
+  data.forEach((announcement) => {
+    createMarker(announcement);
+  });
+  mapFiltersForm.addEventListener('change', () => {
+
+    const filtersArray1 = getFeaturesFiltersArray();
+    const filteredData = data.filter((announcement) => {
+      let price = '';
+      if (announcement.offer.price < LOW_PRICE) {
+        price = 'low';
+      }
+      else if (announcement.offer.price >= LOW_PRICE && announcement.offer.price <= HIGH_PRICE) {
+        price = 'middle';
+      }
+      else if (announcement.offer.price > HIGH_PRICE) {
+        price = 'high';
+      }
+      const typeMatch = function () {
+        return (announcement.offer.type === housingType.value || housingType.value === 'any');
+      };
+      const roomsMatch = function () {
+        return (`${announcement.offer.rooms}` === housingRooms.value || housingRooms.value === 'any');
+      };
+      const guestsMatch = function () {
+        return (`${announcement.offer.guests}`=== housingGuests.value || housingGuests.value === 'any');
+      };
+      const priceMatch = function () {
+        return (price === housingPrice.value || housingPrice.value === 'any');
+      };
+      const result = typeMatch() && roomsMatch() && guestsMatch() && priceMatch() &&
+      featuresMatch(announcement.offer.features, filtersArray1);
+
+      return result;
+    });
+    markerGroup.clearLayers();
+    filteredData.forEach((announcement) => {
       createMarker(announcement);
     });
-    mapFiltersForm.addEventListener('change', () => {
-
-      const filtersArray1 = getFeaturesFiltersArray();
-      const filteredData = data.filter((announcement) => {
-        let price = '';
-        if (announcement.offer.price < LOW_PRICE) {
-          price = 'low';
-        }
-        else if (announcement.offer.price >= LOW_PRICE && announcement.offer.price <= HIGH_PRICE) {
-          price = 'middle';
-        }
-        else if (announcement.offer.price > HIGH_PRICE) {
-          price = 'high';
-        }
-        const typeMatch = function () {
-          return (announcement.offer.type === housingType.value || housingType.value === 'any');
-        };
-        const roomsMatch = function () {
-          return (`${announcement.offer.rooms}` === housingRooms.value || housingRooms.value === 'any');
-        };
-        const guestsMatch = function () {
-          return (`${announcement.offer.guests}`=== housingGuests.value || housingGuests.value === 'any');
-        };
-        const priceMatch = function () {
-          return (price === housingPrice.value || housingPrice.value === 'any');
-        };
-        const result = typeMatch() && roomsMatch() && guestsMatch() && priceMatch() &&
-        featuresMatch(announcement.offer.features, filtersArray1);
-
-        return result;
-      });
-      console.log(filteredData);
-      markerGroup.clearLayers();
-      filteredData.forEach((announcement) => {
-        createMarker(announcement);
-      });
-    });
-  })
-  .catch(() => {
-    const errorInfo = document.createElement('p');
-    errorInfo.textContent = '=> Ошибка загрузки данных с сервера!';
-    errorInfo.style.color = 'red';
-    const errorMessage = document.querySelector('.promo');
-    errorMessage.appendChild(errorInfo);
   });
+};
+
+const fail = function () {
+  const errorInfo = document.createElement('p');
+  errorInfo.textContent = '=> Ошибка загрузки данных с сервера!';
+  errorInfo.style.color = 'red';
+  const errorMessage = document.querySelector('.promo');
+  errorMessage.appendChild(errorInfo);
+};
+
+
+getData(success, fail);
 
 
 export {tokioLat, tokioLng};

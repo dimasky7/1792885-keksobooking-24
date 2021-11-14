@@ -1,6 +1,6 @@
 import { tokioLat, tokioLng } from './main.js';
 import {mainPinMarker, map} from './main.js';
-import { offerForm } from './fetchForForm.js';
+import { offerForm } from './functions-for-sendData.js';
 const numberOfRooms = document.querySelector('#room_number');
 const capacity = document.querySelector('#capacity');
 const capacityOptions = capacity.querySelectorAll('option');

@@ -1,10 +1,10 @@
 import './form.js';
-import './fetchForForm.js';
 import { address } from './form.js';
 import {inactivatePage, activateForm, activateFilters} from './pageState.js';
 import { drawCard } from './similarOffer.js';
 import {mapFiltersForm} from './pageState.js';
-import { getData } from './api.js';
+import { getData, sendData } from './api.js';
+import { offerForm, onSuccessSD, onFailSD } from './functions-for-sendData.js';
 const tokioLat = 35.68950;
 const tokioLng = 139.69171;
 const LOW_PRICE = 10000;
@@ -113,6 +113,13 @@ map
     activateForm();
     address.value = `${tokioLat}, ${tokioLng}`;
     getData(success, fail);
+    offerForm.addEventListener('submit', (evt) => {
+      evt.preventDefault();
+      const formData = new FormData(evt.target);
+
+      sendData(onSuccessSD, onFailSD, formData);
+
+    });
   })
   .setView({
     lat: tokioLat,
@@ -150,9 +157,6 @@ mainPinMarker.on('move', (evt) => {
   const precision = 5;
   address.value = `${coordinates.lat.toFixed(precision)}, ${coordinates.lng.toFixed(precision)}`;
 });
-
-
-////////////////////////Получение данных с сервера///////////////////////////
 
 
 export {tokioLat, tokioLng};

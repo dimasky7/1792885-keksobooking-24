@@ -1,5 +1,5 @@
 import {mapFiltersForm, activateFiltersForm} from './page-state.js';
-import {drawCard} from './similarOffer.js';
+import {drawCard} from './draw-offer-card.js';
 import {debounce} from './debounce.js';
 import {turnOnFilters} from './filter-offers.js';
 

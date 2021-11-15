@@ -1,11 +1,11 @@
-import './form.js';
-import { address } from './form.js';
-import {inactivatePage, activateForm} from './pageState.js';
-import { getData, sendData } from './api.js';
-import { success, fail, markerGroup } from './functions-for-getData.js';
-import { offerForm, onSuccessSD, onFailSD } from './functions-for-sendData.js';
-const tokioLat = 35.68950;
-const tokioLng = 139.69171;
+import './offer-form.js';
+import {address} from './offer-form.js';
+import {inactivatePage, activateForm} from './page-state.js';
+import {getData, sendData} from './api.js';
+import {markerGroup, onSuccessGD, onFailGD} from './functions-for-getData.js';
+import {offerForm, onSuccessSD, onFailSD} from './functions-for-sendData.js';
+const TOKIO_LAT = 35.68950;
+const TOKIO_LNG = 139.69171;
 
 inactivatePage();
 
@@ -14,12 +14,12 @@ markerGroup.addTo(map);
 map
   .on('load', () => {
     activateForm();
-    address.value = `${tokioLat}, ${tokioLng}`;
-    getData(success, fail);
+    address.value = `${TOKIO_LAT}, ${TOKIO_LNG}`;
+    getData(onSuccessGD, onFailGD);
   })
   .setView({
-    lat: tokioLat,
-    lng: tokioLng,
+    lat: TOKIO_LAT,
+    lng: TOKIO_LNG,
   }, 10);
 
 L.tileLayer(
@@ -37,8 +37,8 @@ const mainPinIcon = L.icon({
 
 const mainPinMarker = L.marker(
   {
-    lat: tokioLat,
-    lng: tokioLng,
+    lat: TOKIO_LAT,
+    lng: TOKIO_LNG,
   },
   {
     draggable: true,
@@ -63,5 +63,4 @@ offerForm.addEventListener('submit', (evt) => {
 });
 
 
-export {tokioLat, tokioLng};
-export {mainPinIcon, mainPinMarker, map};
+export {TOKIO_LAT, TOKIO_LNG, mainPinIcon, mainPinMarker, map};

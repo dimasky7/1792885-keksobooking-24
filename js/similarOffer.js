@@ -80,4 +80,5 @@ const drawCard = function (announcement) {
   return newSimilarOffer;
 };
 
+
 export {drawCard};

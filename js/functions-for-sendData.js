@@ -1,6 +1,5 @@
-import { tokioLat, tokioLng } from './main.js';
-import {mainPinMarker, map} from './main.js';
-import { address } from './form.js';
+import {TOKIO_LAT, TOKIO_LNG, mainPinMarker, map} from './main.js';
+import {address, price} from './offer-form.js';
 const offerForm = document.querySelector('.ad-form');
 
 const successContent = document.querySelector('#success').content;
@@ -31,10 +30,12 @@ const onSuccessSD = function () {
   document.addEventListener('keydown', successDocumentEsc);
   map.closePopup();
   offerForm.reset();
-  address.value = `${tokioLat}, ${tokioLng}`;
+  price.setAttribute('min', 1000);
+  price.setAttribute('placeholder', 1000);
+  address.value = `${TOKIO_LAT}, ${TOKIO_LNG}`;
   mainPinMarker.setLatLng({
-    lat: tokioLat,
-    lng: tokioLng,
+    lat: TOKIO_LAT,
+    lng: TOKIO_LNG,
   });
 };
 

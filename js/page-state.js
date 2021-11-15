@@ -1,7 +1,8 @@
+import {offerForm} from './functions-for-sendData.js';
+
 //common constants for activate/inactivate page
-const form = document.querySelector('.ad-form');
-const fieldsetHeader = form.querySelector('.ad-form-header');
-const fieldsetElements = form.querySelectorAll('.ad-form__element');
+const fieldsetHeader = offerForm.querySelector('.ad-form-header');
+const fieldsetElements = offerForm.querySelectorAll('.ad-form__element');
 const mapFiltersForm = document.querySelector('.map__filters');
 const mapFilters = mapFiltersForm.querySelectorAll('.map__filter');
 const mapFeaturesFilter = mapFiltersForm.querySelector('#housing-features');
@@ -12,7 +13,7 @@ const inactivatePage = function () {
   fieldsetElements.forEach((fieldset) => {
     fieldset.setAttribute('disabled', 'disabled');
   });
-  form.classList.add('ad-form--disabled');
+  offerForm.classList.add('ad-form--disabled');
   mapFilters.forEach((filter) => {
     filter.setAttribute('disabled', 'disabled');
   });
@@ -35,9 +36,8 @@ const activateForm = function () {
   fieldsetElements.forEach((fieldset) => {
     fieldset.removeAttribute('disabled');
   });
-  form.classList.remove('ad-form--disabled');
+  offerForm.classList.remove('ad-form--disabled');
 };
 
 
-export {inactivatePage, activateForm, activateFiltersForm};
-export {mapFiltersForm};
+export {inactivatePage, activateForm, activateFiltersForm, mapFiltersForm};

@@ -1,6 +1,5 @@
-import { tokioLat, tokioLng } from './main.js';
-import {mainPinMarker, map} from './main.js';
-import { offerForm } from './functions-for-sendData.js';
+import {TOKIO_LAT, TOKIO_LNG, mainPinMarker, map} from './main.js';
+import {offerForm} from './functions-for-sendData.js';
 const numberOfRooms = offerForm.querySelector('#room_number');
 const capacity = offerForm.querySelector('#capacity');
 const capacityOptions = capacity.querySelectorAll('option');
@@ -16,6 +15,7 @@ for (let i = 1; i < capacity.length; i++) {
   capacityOptions[i].setAttribute('disabled', 'disabled');
 }
 address.setAttribute('readonly', true);
+price.setAttribute('min', 1000);
 
 //handlers
 numberOfRooms.addEventListener('change', (evt) => {
@@ -75,19 +75,21 @@ const getMinPrice = function (housingType) {
 
 type.addEventListener('change', (event) => {
   price.setAttribute('min', getMinPrice(event.target.value));
-  price.setAttribute('placeholder',`${getMinPrice(event.target.value)}`);
+  price.setAttribute('placeholder', getMinPrice(event.target.value));
 });
 
 reset.addEventListener('click', (event) => {
   event.preventDefault();
   map.closePopup();
   offerForm.reset();
-  address.value = `${tokioLat}, ${tokioLng}`;
+  price.setAttribute('min', 1000);
+  price.setAttribute('placeholder', 1000);
+  address.value = `${TOKIO_LAT}, ${TOKIO_LNG}`;
   mainPinMarker.setLatLng({
-    lat: tokioLat,
-    lng: tokioLng,
+    lat: TOKIO_LAT,
+    lng: TOKIO_LNG,
   });
 });
 
 
-export {address};
+export {address, price};

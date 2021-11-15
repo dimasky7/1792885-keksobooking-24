@@ -20,8 +20,8 @@ const inactivatePage = function () {
   mapFiltersForm.classList.add('map__filters--disabled');
 };
 
-//turn on announcements filters
-const activateFilters = function() {
+//turn on announcements filters form
+const activateFiltersForm = function() {
   mapFilters.forEach((filter) => {
     filter.removeAttribute('disabled');
   });
@@ -29,7 +29,7 @@ const activateFilters = function() {
   mapFiltersForm.classList.remove('map__filters--disabled');
 };
 
-//turn on form fields
+//turn on main form fields
 const activateForm = function () {
   fieldsetHeader.removeAttribute('disabled');
   fieldsetElements.forEach((fieldset) => {
@@ -39,5 +39,5 @@ const activateForm = function () {
 };
 
 
-export {inactivatePage, activateForm, activateFilters};
+export {inactivatePage, activateForm, activateFiltersForm};
 export {mapFiltersForm};

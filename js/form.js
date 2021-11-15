@@ -1,11 +1,15 @@
 import { tokioLat, tokioLng } from './main.js';
 import {mainPinMarker, map} from './main.js';
 import { offerForm } from './functions-for-sendData.js';
-const numberOfRooms = document.querySelector('#room_number');
-const capacity = document.querySelector('#capacity');
+const numberOfRooms = offerForm.querySelector('#room_number');
+const capacity = offerForm.querySelector('#capacity');
 const capacityOptions = capacity.querySelectorAll('option');
-const address = document.querySelector('#address');
-const reset = document.querySelector('.ad-form__reset');
+const address = offerForm.querySelector('#address');
+const timeIn = offerForm.querySelector('#timein');
+const timeOut = offerForm.querySelector('#timeout');
+const price = offerForm.querySelector('#price');
+const type = offerForm.querySelector('#type');
+const reset = offerForm.querySelector('.ad-form__reset');
 
 //initial start
 for (let i = 1; i < capacity.length; i++) {
@@ -35,6 +39,43 @@ numberOfRooms.addEventListener('change', (evt) => {
   if (evt.target.value !== '100') {
     capacity.value = evt.target.value;
   }
+});
+
+timeIn.addEventListener('change', () => {
+  if (timeIn.value === '12:00') {
+    timeOut.value = '12:00';
+  } else if (timeIn.value === '13:00') {
+    timeOut.value = '13:00';
+  } else if (timeIn.value === '14:00') {
+    timeOut.value = '14:00';
+  }
+});
+
+timeOut.addEventListener('change', () => {
+  if (timeOut.value === '12:00') {
+    timeIn.value = '12:00';
+  } else if (timeOut.value === '13:00') {
+    timeIn.value = '13:00';
+  } else if (timeOut.value === '14:00') {
+    timeIn.value = '14:00';
+  }
+});
+
+const typeMinPrice = {
+  bungalow: 0,
+  flat: 1000,
+  hotel: 3000,
+  house: 5000,
+  palace: 10000,
+};
+
+const getMinPrice = function (housingType) {
+  return typeMinPrice[housingType];
+};
+
+type.addEventListener('change', (event) => {
+  price.setAttribute('min', getMinPrice(event.target.value));
+  price.setAttribute('placeholder',`${getMinPrice(event.target.value)}`);
 });
 
 reset.addEventListener('click', (event) => {

@@ -1,8 +1,8 @@
 import {TOKIO_LAT, TOKIO_LNG, mainPinMarker, map} from './main.js';
 import {address, price, FLAT_PRICE} from './offer-form.js';
-//import { mapFiltersForm } from './page-state.js';
-//import { onSuccessGD, onFailGD } from './functions-for-getData.js';
-import { getData } from './api.js';
+import {mapFiltersForm} from './offer-form.js';
+import {onSuccessGD, onFailGD} from './offer-form.js';
+import {getData} from './api.js';
 const offerForm = document.querySelector('.ad-form');
 
 const successContent = document.querySelector('#success').content;
@@ -33,8 +33,8 @@ const onSuccessSD = function () {
   document.addEventListener('keydown', successDocumentEsc);
   map.closePopup();
   offerForm.reset();
-  //mapFiltersForm.reset();
-  //getData(onSuccessGD, onFailGD);
+  mapFiltersForm.reset();
+  getData(onSuccessGD, onFailGD);
   price.setAttribute('min', FLAT_PRICE);
   price.setAttribute('placeholder', FLAT_PRICE);
   address.value = `${TOKIO_LAT}, ${TOKIO_LNG}`;

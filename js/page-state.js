@@ -40,4 +40,4 @@ const activateForm = function () {
 };
 
 
-export {inactivatePage, activateForm, activateFiltersForm, mapFiltersForm};
+export {mapFiltersForm, inactivatePage, activateForm, activateFiltersForm};

@@ -1,8 +1,8 @@
 import {TOKIO_LAT, TOKIO_LNG, mainPinMarker, map} from './main.js';
 import {offerForm} from './functions-for-sendData.js';
-import { onSuccessGD, onFailGD } from './functions-for-getData.js';
-import { mapFiltersForm } from './page-state.js';
-import { getData } from './api.js';
+import {onSuccessGD, onFailGD} from './functions-for-getData.js';
+import {mapFiltersForm} from './page-state.js';
+import {getData} from './api.js';
 const numberOfRooms = offerForm.querySelector('#room_number');
 const capacity = offerForm.querySelector('#capacity');
 const capacityOptions = capacity.querySelectorAll('option');
@@ -87,3 +87,4 @@ reset.addEventListener('click', (event) => {
 
 
 export {address, price, FLAT_PRICE};
+export {mapFiltersForm, onSuccessGD, onFailGD, getData};

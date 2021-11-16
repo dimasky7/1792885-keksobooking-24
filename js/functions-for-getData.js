@@ -1,7 +1,9 @@
 import {mapFiltersForm, activateFiltersForm} from './page-state.js';
 import {drawCard} from './draw-offer-card.js';
 import {debounce} from './debounce.js';
-import {turnOnFilters} from './filter-offers.js';
+import {getFilteredData} from './filter-offers.js';
+const RERENDER_DELAY = 500;
+const MAX_NUMBER_OF_OFFERS = 10;
 
 const pinIcon = L.icon({
   iconUrl: 'img/pin.svg',
@@ -28,17 +30,18 @@ const createMarker = (announcement) => {
 
 
 const onSuccessGD = function (data) {
-  data.slice(0, 10).forEach((announcement) => {
+  markerGroup.clearLayers();
+  data.slice(0, MAX_NUMBER_OF_OFFERS).forEach((announcement) => {
     createMarker(announcement);
   });
   activateFiltersForm();
   mapFiltersForm.addEventListener('change', debounce(() => {
     markerGroup.clearLayers();
-    turnOnFilters(data).slice(0, 10).forEach((announcement) => {
+    getFilteredData(data).slice(0, MAX_NUMBER_OF_OFFERS).forEach((announcement) => {
       createMarker(announcement);
     });
 
-  }, 500));
+  }, RERENDER_DELAY));
 };
 
 const onFailGD = function () {

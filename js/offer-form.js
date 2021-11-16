@@ -1,5 +1,8 @@
 import {TOKIO_LAT, TOKIO_LNG, mainPinMarker, map} from './main.js';
 import {offerForm} from './functions-for-sendData.js';
+import { onSuccessGD, onFailGD } from './functions-for-getData.js';
+import { mapFiltersForm } from './page-state.js';
+import { getData } from './api.js';
 const numberOfRooms = offerForm.querySelector('#room_number');
 const capacity = offerForm.querySelector('#capacity');
 const capacityOptions = capacity.querySelectorAll('option');
@@ -9,13 +12,14 @@ const timeOut = offerForm.querySelector('#timeout');
 const price = offerForm.querySelector('#price');
 const type = offerForm.querySelector('#type');
 const reset = offerForm.querySelector('.ad-form__reset');
+const FLAT_PRICE = 1000;
 
 //initial start
 for (let i = 1; i < capacity.length; i++) {
   capacityOptions[i].setAttribute('disabled', 'disabled');
 }
 address.setAttribute('readonly', true);
-price.setAttribute('min', 1000);
+price.setAttribute('min', FLAT_PRICE);
 
 //handlers
 numberOfRooms.addEventListener('change', (evt) => {
@@ -42,23 +46,11 @@ numberOfRooms.addEventListener('change', (evt) => {
 });
 
 timeIn.addEventListener('change', () => {
-  if (timeIn.value === '12:00') {
-    timeOut.value = '12:00';
-  } else if (timeIn.value === '13:00') {
-    timeOut.value = '13:00';
-  } else if (timeIn.value === '14:00') {
-    timeOut.value = '14:00';
-  }
+  timeOut.value = timeIn.value;
 });
 
 timeOut.addEventListener('change', () => {
-  if (timeOut.value === '12:00') {
-    timeIn.value = '12:00';
-  } else if (timeOut.value === '13:00') {
-    timeIn.value = '13:00';
-  } else if (timeOut.value === '14:00') {
-    timeIn.value = '14:00';
-  }
+  timeIn.value = timeOut.value;
 });
 
 const typeMinPrice = {
@@ -82,8 +74,10 @@ reset.addEventListener('click', (event) => {
   event.preventDefault();
   map.closePopup();
   offerForm.reset();
-  price.setAttribute('min', 1000);
-  price.setAttribute('placeholder', 1000);
+  mapFiltersForm.reset();
+  getData(onSuccessGD, onFailGD);
+  price.setAttribute('min', FLAT_PRICE);
+  price.setAttribute('placeholder', FLAT_PRICE);
   address.value = `${TOKIO_LAT}, ${TOKIO_LNG}`;
   mainPinMarker.setLatLng({
     lat: TOKIO_LAT,
@@ -92,4 +86,4 @@ reset.addEventListener('click', (event) => {
 });
 
 
-export {address, price};
+export {address, price, FLAT_PRICE};

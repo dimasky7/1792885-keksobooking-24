@@ -21,7 +21,7 @@ const featuresMatch = function (features, filtersArray) {
   return true;
 };
 
-const turnOnFilters = function (data) {
+const getFilteredData = function (data) {
   const filtersArray = getFeaturesFiltersArray();
   const filteredData = data.filter((announcement) => {
     let price = '';
@@ -55,4 +55,4 @@ const turnOnFilters = function (data) {
 };
 
 
-export {turnOnFilters};
+export {getFilteredData};

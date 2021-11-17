@@ -3,6 +3,8 @@ import {offerForm} from './functions-for-sendData.js';
 import {onSuccessGD, onFailGD} from './functions-for-getData.js';
 import {mapFiltersForm} from './page-state.js';
 import {getData} from './api.js';
+import { previewAvatar } from './preview-photos/avatar.js';
+import { previewHousePhotos } from './preview-photos/house-photos.js';
 const numberOfRooms = offerForm.querySelector('#room_number');
 const capacity = offerForm.querySelector('#capacity');
 const capacityOptions = capacity.querySelectorAll('option');
@@ -13,6 +15,17 @@ const price = offerForm.querySelector('#price');
 const type = offerForm.querySelector('#type');
 const reset = offerForm.querySelector('.ad-form__reset');
 const FLAT_PRICE = 1000;
+const typeMinPrice = {
+  bungalow: 0,
+  flat: 1000,
+  hotel: 3000,
+  house: 5000,
+  palace: 10000,
+};
+
+const getMinPrice = function (housingType) {
+  return typeMinPrice[housingType];
+};
 
 //initial start
 for (let i = 1; i < capacity.length; i++) {
@@ -53,18 +66,6 @@ timeOut.addEventListener('change', () => {
   timeIn.value = timeOut.value;
 });
 
-const typeMinPrice = {
-  bungalow: 0,
-  flat: 1000,
-  hotel: 3000,
-  house: 5000,
-  palace: 10000,
-};
-
-const getMinPrice = function (housingType) {
-  return typeMinPrice[housingType];
-};
-
 type.addEventListener('change', (event) => {
   price.setAttribute('min', getMinPrice(event.target.value));
   price.setAttribute('placeholder', getMinPrice(event.target.value));
@@ -76,6 +77,10 @@ reset.addEventListener('click', (event) => {
   offerForm.reset();
   mapFiltersForm.reset();
   getData(onSuccessGD, onFailGD);
+  previewAvatar.src = 'img/muffin-grey.svg';
+  if (previewHousePhotos.children[0]) {
+    previewHousePhotos.children[0].remove();
+  }
   price.setAttribute('min', FLAT_PRICE);
   price.setAttribute('placeholder', FLAT_PRICE);
   address.value = `${TOKIO_LAT}, ${TOKIO_LNG}`;

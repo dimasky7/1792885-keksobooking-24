@@ -37,7 +37,7 @@ const onSuccessGD = function (data) {
   activateFiltersForm();
   mapFiltersForm.addEventListener('change', debounce(() => {
     markerGroup.clearLayers();
-    getFilteredData(data).slice(0, MAX_NUMBER_OF_OFFERS).forEach((announcement) => {
+    getFilteredData(data).forEach((announcement) => {
       createMarker(announcement);
     });
 

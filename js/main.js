@@ -1,4 +1,6 @@
 import './offer-form.js';
+import './preview-photos/avatar.js';
+import './preview-photos/house-photos.js';
 import {address} from './offer-form.js';
 import {inactivatePage, activateForm} from './page-state.js';
 import {getData, sendData} from './api.js';

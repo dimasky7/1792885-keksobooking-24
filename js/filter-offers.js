@@ -13,44 +13,51 @@ const getFeaturesFiltersArray = function () {
   return featuresArrayOut;
 };
 
+const typeMatch = function (type) {
+  return (type === housingType.value || housingType.value === 'any');
+};
+const roomsMatch = function (rooms) {
+  return (rooms === housingRooms.value || housingRooms.value === 'any');
+};
+const guestsMatch = function (guests) {
+  return (guests === housingGuests.value || housingGuests.value === 'any');
+};
+const priceMatch = function (priceParam) {
+  return (priceParam === housingPrice.value || housingPrice.value === 'any');
+};
+
 const featuresMatch = function (features, filtersArray) {
   if ((!features) && (filtersArray.length > 0)) {return false;}
   for (let i=0; i < filtersArray.length; i++) {
-    if (features.includes(filtersArray[i]) === false) {return false;}
+    if (!features.includes(filtersArray[i])) {return false;}
   }
   return true;
 };
 
 const getFilteredData = function (data) {
   const filtersArray = getFeaturesFiltersArray();
-  const filteredData = data.filter((announcement) => {
+  const filteredData = [];
+  for (let i = 0; i < data.length; i++) {
     let price = '';
-    if (announcement.offer.price < LOW_PRICE) {
+    if (data[i].offer.price < LOW_PRICE) {
       price = 'low';
     }
-    else if (announcement.offer.price >= LOW_PRICE && announcement.offer.price <= HIGH_PRICE) {
+    else if (data[i].offer.price >= LOW_PRICE && data[i].offer.price <= HIGH_PRICE) {
       price = 'middle';
     }
-    else if (announcement.offer.price > HIGH_PRICE) {
+    else if (data[i].offer.price > HIGH_PRICE) {
       price = 'high';
     }
-    const typeMatch = function () {
-      return (announcement.offer.type === housingType.value || housingType.value === 'any');
-    };
-    const roomsMatch = function () {
-      return (`${announcement.offer.rooms}` === housingRooms.value || housingRooms.value === 'any');
-    };
-    const guestsMatch = function () {
-      return (`${announcement.offer.guests}`=== housingGuests.value || housingGuests.value === 'any');
-    };
-    const priceMatch = function () {
-      return (price === housingPrice.value || housingPrice.value === 'any');
-    };
-    const result = typeMatch() && roomsMatch() && guestsMatch() && priceMatch() &&
-            featuresMatch(announcement.offer.features, filtersArray);
+    const result = typeMatch(data[i].offer.type) && roomsMatch(`${data[i].offer.rooms}`) && guestsMatch(`${data[i].offer.guests}`) && priceMatch(price) &&
+            featuresMatch(data[i].offer.features, filtersArray);
 
-    return result;
-  });
+    if (result === true) {
+      filteredData.push(data[i]);
+    }
+    if (filteredData.length === 10) {
+      break;
+    }
+  }
   return filteredData;
 };
 

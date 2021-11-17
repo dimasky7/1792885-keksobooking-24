@@ -1,21 +1,25 @@
-import './form.js';
-import './fetchForForm.js';
-import { address } from './form.js';
-import {inactivatePage, activatePage} from './pageState.js';
-import { drawCard } from './similarOffer.js';
-const tokioLat = 35.68950;
-const tokioLng = 139.69171;
+import './offer-form.js';
+import {address} from './offer-form.js';
+import {inactivatePage, activateForm} from './page-state.js';
+import {getData, sendData} from './api.js';
+import {markerGroup, onSuccessGD, onFailGD} from './functions-for-getData.js';
+import {offerForm, onSuccessSD, onFailSD} from './functions-for-sendData.js';
+const TOKIO_LAT = 35.68950;
+const TOKIO_LNG = 139.69171;
 
 inactivatePage();
 
-const map = L.map('map-canvas')
+const map = L.map('map-canvas');
+markerGroup.addTo(map);
+map
   .on('load', () => {
-    activatePage();
-    address.value = `${tokioLat}, ${tokioLng}`;
+    activateForm();
+    address.value = `${TOKIO_LAT}, ${TOKIO_LNG}`;
+    getData(onSuccessGD, onFailGD);
   })
   .setView({
-    lat: tokioLat,
-    lng: tokioLng,
+    lat: TOKIO_LAT,
+    lng: TOKIO_LNG,
   }, 10);
 
 L.tileLayer(
@@ -31,16 +35,10 @@ const mainPinIcon = L.icon({
   iconAnchor: [26, 52],
 });
 
-const pinIcon = L.icon({
-  iconUrl: 'img/pin.svg',
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
-});
-
 const mainPinMarker = L.marker(
   {
-    lat: tokioLat,
-    lng: tokioLng,
+    lat: TOKIO_LAT,
+    lng: TOKIO_LNG,
   },
   {
     draggable: true,
@@ -50,44 +48,19 @@ const mainPinMarker = L.marker(
 
 mainPinMarker.addTo(map);
 
-mainPinMarker.on('moveend', (evt) => {
+mainPinMarker.on('move', (evt) => {
   const coordinates = evt.target.getLatLng();
   const precision = 5;
   address.value = `${coordinates.lat.toFixed(precision)}, ${coordinates.lng.toFixed(precision)}`;
 });
 
-////////////////////////Получение данных с сервера///////////////////////////
+offerForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  const formData = new FormData(evt.target);
 
-fetch('https://24.javascript.pages.academy/keksobooking/data')
-  .then((response) => {
-    if (response.ok) {
-      return response.json();
-    }
-    throw new Error();
-  })
-  .then((data) => {
-    data.forEach((announcement) => {
-      const marker = L.marker({
-        lat: announcement.location.lat,
-        lng: announcement.location.lng,
-      },
-      {
-        icon: pinIcon,
-      },
-      );
+  sendData(onSuccessSD, onFailSD, formData);
 
-      marker
-        .addTo(map)
-        .bindPopup(drawCard(announcement));
-    });
-  })
-  .catch(() => {
-    const errorInfo = document.createElement('p');
-    errorInfo.textContent = '=> Ошибка загрузки данных с сервера!';
-    errorInfo.style.color = 'red';
-    const errorMessage = document.querySelector('.promo');
-    errorMessage.appendChild(errorInfo);
-  });
+});
 
-export {tokioLat, tokioLng};
-export {mainPinIcon, mainPinMarker, map};
+
+export {TOKIO_LAT, TOKIO_LNG, mainPinIcon, mainPinMarker, map};

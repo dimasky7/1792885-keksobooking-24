@@ -5,6 +5,7 @@ import {mapFiltersForm} from './page-state.js';
 import {getData} from './api.js';
 import { previewAvatar } from './preview-photos/avatar.js';
 import { previewHousePhotos } from './preview-photos/house-photos.js';
+const FLAT_PRICE = 1000;
 const numberOfRooms = offerForm.querySelector('#room_number');
 const capacity = offerForm.querySelector('#capacity');
 const capacityOptions = capacity.querySelectorAll('option');
@@ -14,7 +15,6 @@ const timeOut = offerForm.querySelector('#timeout');
 const price = offerForm.querySelector('#price');
 const type = offerForm.querySelector('#type');
 const reset = offerForm.querySelector('.ad-form__reset');
-const FLAT_PRICE = 1000;
 const typeMinPrice = {
   bungalow: 0,
   flat: 1000,
